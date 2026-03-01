@@ -3,194 +3,581 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NovaCore Technologies</title>
+<title>NovaCore Technologies | Next-Gen IT</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
 body{background:#070707;color:white;overflow-x:hidden;}
 html{scroll-behavior:smooth;}
-section{padding:120px 8%;}
-h2{font-size:50px;text-align:center;margin-bottom:60px;color:red;text-shadow:0 0 15px red;}
-p{color:#aaa;line-height:1.7;}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from{opacity:0;transform:translateY(50px);}
+    to{opacity:1;transform:translateY(0);}
+}
+@keyframes float {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-20px);}
+}
+@keyframes glow {
+    0%,100%{text-shadow:0 0 20px red,0 0 40px red;}
+    50%{text-shadow:0 0 40px red,0 0 80px red;}
+}
+@keyframes rotate {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+@keyframes pulse {
+    0%{transform:scale(1);opacity:0.5;}
+    50%{transform:scale(1.5);opacity:0.2;}
+    100%{transform:scale(1);opacity:0.5;}
+}
+@keyframes circleMove {
+    0%{transform:translate(0,0) scale(1);}
+    25%{transform:translate(20px,-20px) scale(1.2);}
+    50%{transform:translate(-20px,20px) scale(0.8);}
+    75%{transform:translate(20px,20px) scale(1.1);}
+    100%{transform:translate(0,0) scale(1);}
+}
+
+section{padding:120px 8%;position:relative;z-index:1;}
+h2{font-size:50px;text-align:center;margin-bottom:60px;color:red;text-shadow:0 0 15px red;animation:glow 3s infinite;}
+p{color:#aaa;line-height:1.7;font-size:16px;}
+
+/* Фоновые круги */
+.background-circles{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+}
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:red;
+    filter:blur(80px);
+    opacity:0.1;
+    animation:circleMove 20s infinite;
+}
+.circle1{
+    width:400px;
+    height:400px;
+    top:10%;
+    left:5%;
+    animation-delay:0s;
+}
+.circle2{
+    width:600px;
+    height:600px;
+    bottom:10%;
+    right:5%;
+    animation-delay:-5s;
+}
+.circle3{
+    width:300px;
+    height:300px;
+    top:40%;
+    right:20%;
+    animation-delay:-10s;
+}
+.circle4{
+    width:500px;
+    height:500px;
+    bottom:20%;
+    left:10%;
+    animation-delay:-15s;
+}
+
+/* Прелоадер */
+.preloader{
+    position:fixed;width:100%;height:100%;background:#070707;
+    z-index:10000;display:flex;justify-content:center;align-items:center;
+}
+.loader{
+    width:50px;height:50px;border:3px solid #300;
+    border-top:3px solid red;border-radius:50%;
+    animation:rotate 1s infinite linear;
+}
 
 nav{
 position:fixed;width:100%;display:flex;justify-content:space-between;
-align-items:center;padding:20px 8%;background:rgba(0,0,0,0.6);
-backdrop-filter:blur(12px);z-index:1000;
+align-items:center;padding:20px 8%;background:rgba(0,0,0,0.8);
+backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid rgba(255,0,0,0.2);
 }
 
-.logo-box{display:flex;align-items:center;gap:15px;}
-.logo-box img{width:45px;}
-.logo-box span{color:red;font-weight:700;}
+.logo-box{display:flex;align-items:center;gap:15px;position:relative;}
+.logo-box i{font-size:30px;color:red;filter:drop-shadow(0 0 10px red);position:relative;z-index:1;}
+.logo-box .pulse-circle{
+    position:absolute;
+    width:40px;
+    height:40px;
+    background:red;
+    border-radius:50%;
+    opacity:0.3;
+    animation:pulse 2s infinite;
+}
+.logo-box span{color:red;font-weight:700;font-size:20px;position:relative;z-index:1;}
 
 nav ul{display:flex;gap:30px;list-style:none;}
-nav a{color:white;text-decoration:none;transition:0.3s;}
-nav a:hover{color:red;}
-
-.contact-btn{
-padding:10px 25px;border:2px solid red;color:red;
-transition:0.4s;
+nav ul li{position:relative;}
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    transition:0.3s;
+    font-size:14px;
+    letter-spacing:1px;
+    padding:5px 15px;
+    border-radius:30px;
+    position:relative;
+    z-index:1;
 }
-.contact-btn:hover{
-background:red;color:black;box-shadow:0 0 20px red;
+nav ul li a::before{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    width:100%;
+    height:100%;
+    background:red;
+    border-radius:30px;
+    opacity:0;
+    transition:0.3s;
+    z-index:-1;
+}
+nav ul li a:hover::before{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:0.2;
+}
+nav ul li a:hover{
+    color:red;
+    text-shadow:0 0 10px red;
+}
+nav ul li::after{
+    content:'';
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    width:8px;
+    height:8px;
+    background:red;
+    border-radius:50%;
+    opacity:0;
+    transition:0.3s;
+    box-shadow:0 0 10px red;
+}
+nav ul li:hover::after{
+    opacity:1;
+    animation:pulse 1s infinite;
 }
 
 .hero{
-height:100vh;display:flex;flex-direction:column;
+min-height:100vh;display:flex;flex-direction:column;
 justify-content:center;align-items:center;text-align:center;
-background:radial-gradient(circle at center,#1a0000,#000000);
+background:radial-gradient(circle at 30% 30%, #1a0000, #000000);
+position:relative;overflow:hidden;
+}
+
+.hero::before{
+content:'';position:absolute;width:200%;height:200%;
+background:radial-gradient(circle, red 0%, transparent 70%);
+opacity:0.1;animation:float 10s infinite;
 }
 
 .hero h1{
 font-size:90px;color:red;text-shadow:0 0 30px red;
+margin-bottom:20px;animation:fadeInUp 1s ease;
 }
 
-.hero p{margin-top:20px;font-size:22px;max-width:900px;}
+.hero p{
+margin-top:20px;font-size:22px;max-width:900px;
+animation:fadeInUp 1s ease 0.2s both;
+}
 
 .main-btn{
 margin-top:40px;padding:20px 60px;border:2px solid red;
 background:transparent;color:red;font-size:18px;
-transition:0.4s;text-decoration:none;
+transition:0.4s;text-decoration:none;border-radius:50px;
+animation:fadeInUp 1s ease 0.4s both;position:relative;overflow:hidden;
+}
+.main-btn::before{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    width:100%;
+    height:100%;
+    background:red;
+    border-radius:50px;
+    opacity:0;
+    transition:0.4s;
+    z-index:-1;
+}
+.main-btn:hover::before{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
 }
 .main-btn:hover{
-background:red;color:black;box-shadow:0 0 30px red;
+color:black;box-shadow:0 0 30px red;
 transform:scale(1.1);
 }
 
 /* GRID */
 .grid{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:40px;
 }
 
 .card{
-background:#111;padding:40px;border:1px solid #300000;
+background:#111;padding:40px;border:1px solid #300;
 transition:0.4s;transform:translateY(40px);opacity:0;
+border-radius:20px;position:relative;overflow:hidden;
 }
+.card::before{
+content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+background:linear-gradient(90deg,transparent,red,transparent);
+transition:0.6s;
+}
+.card:hover::before{left:100%;}
 .card:hover{
 border:1px solid red;box-shadow:0 0 30px red;
-transform:translateY(-10px);
+transform:translateY(-20px);
 }
-.card h3{color:red;margin-bottom:15px;}
+.card h3{color:red;margin-bottom:15px;font-size:24px;}
+.card i{font-size:40px;color:red;margin-bottom:20px;}
 
 .show{opacity:1;transform:translateY(0);transition:1s ease;}
 
-.stats{
-display:flex;justify-content:center;gap:100px;
-flex-wrap:wrap;text-align:center;
+/* Статистика */
+.stats-grid{
+display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
+text-align:center;margin:80px 0;
+}
+.stat-item{
+background:#111;padding:40px;border-radius:20px;
+border:1px solid #300;position:relative;overflow:hidden;
+transition:0.4s;
+}
+.stat-item:hover{
+    transform:scale(1.05);
+    border-color:red;
+    box-shadow:0 0 30px red;
+}
+.stat-item::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, red 0%, transparent 70%);
+    opacity:0;
+    transition:0.4s;
+    animation:rotate 10s linear infinite;
+}
+.stat-item:hover::before{
+    opacity:0.1;
 }
 .stat{
-font-size:70px;color:red;text-shadow:0 0 20px red;
+font-size:70px;color:red;text-shadow:0 0 20px red;margin-bottom:10px;
 }
+.stat-label{color:#aaa;font-size:18px;}
 
-.timeline div{
-margin:40px 0;padding-left:20px;
-border-left:2px solid red;
+/* Таймлайн */
+.timeline{
+max-width:800px;margin:0 auto;
 }
+.timeline-item{
+margin:60px 0;padding:30px;background:#111;border-radius:20px;
+border-left:4px solid red;transform:translateX(-50px);opacity:0;
+transition:1s;position:relative;overflow:hidden;
+}
+.timeline-item::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, red 0%, transparent 70%);
+    opacity:0;
+    transition:0.4s;
+}
+.timeline-item:hover::before{
+    opacity:0.05;
+}
+.timeline-item.show{transform:translateX(0);opacity:1;}
+.timeline-item h3{color:red;margin-bottom:10px;font-size:24px;}
+.timeline-item p{color:#aaa;}
 
+/* Команда */
 .team{
 display:flex;flex-wrap:wrap;gap:40px;justify-content:center;
 }
 .member{
-text-align:center;width:220px;
+text-align:center;width:220px;background:#111;padding:30px;
+border-radius:20px;border:1px solid #300;transition:0.4s;
+position:relative;overflow:hidden;
 }
-.member img{
-width:150px;height:150px;border-radius:50%;
-border:2px solid red;margin-bottom:15px;
+.member::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, red 0%, transparent 70%);
+    opacity:0;
+    transition:0.4s;
+}
+.member:hover::before{
+    opacity:0.1;
+}
+.member:hover{transform:scale(1.1);border-color:red;box-shadow:0 0 30px red;}
+.member .avatar{
+width:120px;height:120px;border-radius:50%;
+border:3px solid red;margin:0 auto 20px;
+background:linear-gradient(45deg,red,#300);
+display:flex;align-items:center;justify-content:center;
+position:relative;
+}
+.member .avatar .pulse-circle{
+    position:absolute;
+    width:130px;
+    height:130px;
+    background:red;
+    border-radius:50%;
+    opacity:0.2;
+    animation:pulse 2s infinite;
+}
+.member .avatar i{font-size:50px;color:white;position:relative;z-index:1;}
+.member h4{color:red;margin-bottom:5px;}
+.member p{color:#aaa;font-size:14px;}
+.member-email{
+    color:#ff5555;font-size:12px;margin-top:10px;word-break:break-all;
+    position:relative;z-index:1;
 }
 
+/* Футер */
 footer{
 padding:50px;background:#111;text-align:center;color:#777;
+border-top:1px solid #300;position:relative;overflow:hidden;
+}
+footer::before{
+    content:'';
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:1px;
+    background:linear-gradient(90deg,transparent,red,transparent);
+    animation:float 3s infinite;
+}
+.social-links{display:flex;gap:20px;justify-content:center;margin-top:20px;}
+.social-links a{
+color:#777;font-size:24px;transition:0.4s;position:relative;
+}
+.social-links a::before{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:0;
+    height:0;
+    background:red;
+    border-radius:50%;
+    transition:0.4s;
+    z-index:-1;
+}
+.social-links a:hover::before{
+    width:40px;
+    height:40px;
+    opacity:0.3;
+}
+.social-links a:hover{color:red;transform:scale(1.2);}
+
+/* Адаптив */
+@media (max-width:768px){
+    .hero h1{font-size:40px;}
+    nav ul{display:none;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 
 <body>
+<!-- Фоновые круги -->
+<div class="background-circles">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+    <div class="circle circle4"></div>
+</div>
+
+<div class="preloader">
+    <div class="loader"></div>
+</div>
 
 <nav>
 <div class="logo-box">
-<img src="logo.png">
-<span>NovaCore</span>
+    <i class="fas fa-cube"></i>
+    <div class="pulse-circle"></div>
+    <span>NovaCore</span>
 </div>
 <ul>
-<li><a href="#about">О нас</a></li>
-<li><a href="#services">Услуги</a></li>
-<li><a href="#cases">Кейсы</a></li>
-<li><a href="#contact" class="contact-btn">Контакты</a></li>
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#cases">Кейсы</a></li>
+    <li><a href="#team">Команда</a></li>
 </ul>
 </nav>
 
 <div class="hero">
-<h1>NovaCore Technologies</h1>
-<p>Глобальная IT-компания, создающая цифровые экосистемы нового поколения для бизнеса, стартапов и корпораций.</p>
-<a href="https://t.me/novacoreofficial" target="_blank" class="main-btn">Связаться в Telegram</a>
+    <h1>NovaCore</h1>
+    <h1 style="font-size:40px;margin-top:-30px;">Technologies</h1>
+    <p>Глобальная IT-компания, создающая цифровые экосистемы нового поколения для бизнеса, стартапов и корпораций.</p>
+    <a href="https://t.me/novacoreofficial" target="_blank" class="main-btn">Связаться в Telegram</a>
+</div>
+
+<!-- СТАТИСТИКА -->
+<div class="stats-grid">
+    <div class="stat-item"><div class="stat">200+</div><div class="stat-label">Проектов</div></div>
+    <div class="stat-item"><div class="stat">50+</div><div class="stat-label">Клиентов</div></div>
+    <div class="stat-item"><div class="stat">5+</div><div class="stat-label">Лет опыта</div></div>
+    <div class="stat-item"><div class="stat">24/7</div><div class="stat-label">Поддержка</div></div>
 </div>
 
 <section id="about">
-<h2>О КОМПАНИИ</h2>
-<p style="max-width:900px;margin:auto;text-align:center;">
-NovaCore Technologies — международная IT-компания, специализирующаяся на создании масштабируемых платформ, корпоративных решений и высоконагруженных систем.
-Наша миссия — ускорять цифровую трансформацию бизнеса через инновации, безопасность и автоматизацию.
-</p>
+    <h2>О КОМПАНИИ</h2>
+    <p style="max-width:900px;margin:auto;text-align:center;">
+        NovaCore Technologies — международная IT-компания, специализирующаяся на создании масштабируемых платформ, корпоративных решений и высоконагруженных систем.
+        Наша миссия — ускорять цифровую трансформацию бизнеса через инновации, безопасность и автоматизацию.
+    </p>
 </section>
 
 <section id="services">
-<h2>НАПРАВЛЕНИЯ</h2>
-<div class="grid">
-<div class="card"><h3>Enterprise Web</h3><p>SaaS и платформы.</p></div>
-<div class="card"><h3>Mobile Development</h3><p>iOS / Android решения.</p></div>
-<div class="card"><h3>AI & ML</h3><p>Интеллектуальные системы.</p></div>
-<div class="card"><h3>Cybersecurity</h3><p>Комплексная защита.</p></div>
-<div class="card"><h3>DevOps</h3><p>Облачная инфраструктура.</p></div>
-<div class="card"><h3>Blockchain</h3><p>Web3 решения.</p></div>
-<div class="card"><h3>CRM/ERP</h3><p>Автоматизация бизнеса.</p></div>
-<div class="card"><h3>Big Data</h3><p>Аналитика и прогнозирование.</p></div>
-</div>
+    <h2>НАПРАВЛЕНИЯ</h2>
+    <div class="grid">
+        <div class="card"><i class="fas fa-globe"></i><h3>Enterprise Web</h3><p>SaaS и платформы.</p></div>
+        <div class="card"><i class="fas fa-mobile-alt"></i><h3>Mobile Development</h3><p>iOS / Android решения.</p></div>
+        <div class="card"><i class="fas fa-robot"></i><h3>AI & ML</h3><p>Интеллектуальные системы.</p></div>
+        <div class="card"><i class="fas fa-shield-alt"></i><h3>Cybersecurity</h3><p>Комплексная защита.</p></div>
+        <div class="card"><i class="fas fa-cloud"></i><h3>DevOps</h3><p>Облачная инфраструктура.</p></div>
+        <div class="card"><i class="fas fa-link"></i><h3>Blockchain</h3><p>Web3 решения.</p></div>
+        <div class="card"><i class="fas fa-chart-line"></i><h3>CRM/ERP</h3><p>Автоматизация бизнеса.</p></div>
+        <div class="card"><i class="fas fa-database"></i><h3>Big Data</h3><p>Аналитика и прогнозирование.</p></div>
+    </div>
 </section>
 
 <section id="cases">
-<h2>КЕЙСЫ</h2>
-<div class="grid">
-<div class="card"><h3>FinTech Платформа</h3><p>Обработка 1M+ транзакций в сутки.</p></div>
-<div class="card"><h3>E-commerce Система</h3><p>Рост продаж на 240%.</p></div>
-<div class="card"><h3>AI Аналитика</h3><p>Снижение расходов на 35%.</p></div>
-</div>
+    <h2>КЕЙСЫ</h2>
+    <div class="grid">
+        <div class="card"><h3>FinTech Платформа</h3><p>Обработка 1M+ транзакций в сутки.</p></div>
+        <div class="card"><h3>E-commerce Система</h3><p>Рост продаж на 240%.</p></div>
+        <div class="card"><h3>AI Аналитика</h3><p>Снижение расходов на 35%.</p></div>
+    </div>
 </section>
 
 <section>
-<h2>НАШ ПРОЦЕСС</h2>
-<div class="timeline">
-<div><h3>01 — Анализ</h3><p>Изучаем бизнес клиента.</p></div>
-<div><h3>02 — Архитектура</h3><p>Проектируем масштабируемую систему.</p></div>
-<div><h3>03 — Разработка</h3><p>Создание и тестирование.</p></div>
-<div><h3>04 — Поддержка</h3><p>Долгосрочное сопровождение.</p></div>
-</div>
+    <h2>НАШ ПРОЦЕСС</h2>
+    <div class="timeline">
+        <div class="timeline-item"><h3>01 — Анализ</h3><p>Изучаем бизнес клиента.</p></div>
+        <div class="timeline-item"><h3>02 — Архитектура</h3><p>Проектируем масштабируемую систему.</p></div>
+        <div class="timeline-item"><h3>03 — Разработка</h3><p>Создание и тестирование.</p></div>
+        <div class="timeline-item"><h3>04 — Поддержка</h3><p>Долгосрочное сопровождение.</p></div>
+    </div>
 </section>
 
-<section id="contact">
-<h2>СВЯЗАТЬСЯ</h2>
-<p style="text-align:center;">Готовы обсудить проект? Напишите нам в Telegram.</p>
-<div style="text-align:center;margin-top:30px;">
-<a href="https://t.me/novacoreofficial" target="_blank" class="main-btn">Перейти в Telegram</a>
-</div>
+<section id="team">
+    <h2>КОМАНДА</h2>
+    <div class="team">
+        <div class="member">
+            <div class="avatar">
+                <i class="fas fa-user-tie"></i>
+                <div class="pulse-circle"></div>
+            </div>
+            <h4>Андрей</h4>
+            <p>Lead Developer, Full-stack</p>
+            <div class="member-email">andrey@novacore.tech</div>
+        </div>
+        <div class="member">
+            <div class="avatar">
+                <i class="fas fa-user-cog"></i>
+                <div class="pulse-circle"></div>
+            </div>
+            <h4>Артём</h4>
+            <p>UI/UX Designer, Frontend</p>
+            <div class="member-email">artem@novacore.tech</div>
+        </div>
+    </div>
+    <p style="text-align:center;margin-top:40px;color:#ff5555;font-size:18px;">
+        По всем вопросам: <strong>bobka9873@gmail.com</strong>
+    </p>
 </section>
 
 <footer>
-© 2026 NovaCore Technologies. All rights reserved.
+    <p>© 2025 NovaCore Technologies. All rights reserved.</p>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
 </footer>
 
 <script>
-const cards=document.querySelectorAll(".card");
-window.addEventListener("scroll",()=>{
-const trigger=window.innerHeight*0.85;
-cards.forEach(card=>{
-if(card.getBoundingClientRect().top<trigger){
-card.classList.add("show");
-}
+// Прелоадер
+window.addEventListener('load',()=>{
+    document.querySelector('.preloader').style.display='none';
 });
+
+// Анимация карточек
+const animatedElements = document.querySelectorAll('.card, .timeline-item, .stat-item');
+window.addEventListener('scroll',()=>{
+    const trigger = window.innerHeight * 0.85;
+    animatedElements.forEach(el=>{
+        if(el.getBoundingClientRect().top < trigger){
+            el.classList.add('show');
+        }
+    });
+});
+
+// Анимация цифр
+const stats = document.querySelectorAll('.stat');
+let animated = false;
+
+function animateNumbers(){
+    if(animated) return;
+    stats.forEach(stat=>{
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(()=>{
+            current += increment;
+            if(current >= target){
+                stat.textContent = target + (target == 24 ? '/7' : '+');
+                clearInterval(timer);
+            } else {
+                stat.textContent = Math.floor(current) + (target == 24 ? '' : '+');
+            }
+        }, 30);
+    });
+    animated = true;
+}
+
+// Запуск анимации цифр при скролле до статистики
+window.addEventListener('scroll',()=>{
+    const statsSection = document.querySelector('.stats-grid');
+    if(statsSection && statsSection.getBoundingClientRect().top < window.innerHeight * 0.8){
+        animateNumbers();
+    }
 });
 </script>
-
 </body>
 </html>
